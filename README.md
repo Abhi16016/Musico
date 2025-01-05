@@ -26,14 +26,18 @@ A modern music streaming application built with Next.js, TypeScript, and Tailwin
 
 ### Setup and Installation
 
-```bash
 # Clone the repository
+```bash
 git clone https://github.com/Abhi16016/Musico.git
+```
 
 # Navigate to project directory
+```bash
 cd Musico
+```
 
 # Install dependencies
+```bash
 npm install
 # or
 yarn install
@@ -41,8 +45,10 @@ yarn install
 pnpm install
 # or
 bun install
+```
 
 # Start development server
+```bash
 npm run dev
 # or
 yarn dev
@@ -50,3 +56,4 @@ yarn dev
 pnpm dev
 # or
 bun dev
+```
