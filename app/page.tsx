@@ -1,101 +1,114 @@
-import Image from "next/image";
+"use client"
+
+import { useState, useEffect, useRef, useCallback } from "react"
+import { TrackCard } from "../components/track-card"
+import { Player } from "../components/player"
+import { Header } from "../components/header"
+import { usePlayer } from "../context/player-context"
+import type { Track } from "../types/music"
+import { Skeleton } from "@/components/ui/skeleton"
+
+const TRACKS_PER_PAGE = 30
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [tracks, setTracks] = useState<Track[]>([])
+  const [filteredTracks, setFilteredTracks] = useState<Track[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const { setPlaylist } = usePlayer()
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+  const observer = useRef<IntersectionObserver>()
+  const lastTrackElementRef = useCallback((node: HTMLDivElement | null) => {
+    if (isLoading) return
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1)
+      }
+    })
+    if (node) observer.current.observe(node)
+  }, [isLoading, hasMore])
+
+  const fetchTracks = useCallback(async (pageNumber: number) => {
+    try {
+      setIsLoading(true)
+      const response = await fetch(
+        `https://api.jamendo.com/v3.0/tracks/?client_id=04b90385&limit=${TRACKS_PER_PAGE}&offset=${(pageNumber - 1) * TRACKS_PER_PAGE}&format=json&include=musicinfo`
+      )
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json()
+      const newTracks = data.results.map((track: any) => ({
+        id: track.id,
+        name: track.name,
+        artist_name: track.artist_name,
+        duration: track.duration,
+        audio: track.audio,
+        image: track.image || '/placeholder.svg?height=400&width=400',
+        shareurl: track.shareurl,
+      }))
+      setTracks(prev => [...prev, ...newTracks])
+      setFilteredTracks(prev => [...prev, ...newTracks])
+      setPlaylist(prev => [...prev, ...newTracks])
+      setHasMore(newTracks.length === TRACKS_PER_PAGE)
+      setIsLoading(false)
+    } catch (error) {
+      console.error("Error fetching tracks:", error)
+      setHasMore(false)
+      setIsLoading(false)
+    }
+  }, [setPlaylist])
+
+  useEffect(() => {
+    fetchTracks(page)
+  }, [page, fetchTracks])
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query)
+    if (query.trim() === "") {
+      setFilteredTracks(tracks)
+    } else {
+      const filtered = tracks.filter(
+        track => 
+          track.name.toLowerCase().includes(query.toLowerCase()) ||
+          track.artist_name.toLowerCase().includes(query.toLowerCase())
+      )
+      setFilteredTracks(filtered)
+    }
+  }, [tracks])
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white">
+      <Header onSearch={handleSearch} />
+      <main className="container p-4 pb-24 md:pb-4">
+        {isLoading && tracks.length === 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
+            {Array.from({ length: TRACKS_PER_PAGE }).map((_, index) => (
+              <Skeleton key={index} className="h-[150px] sm:h-[180px] md:h-[200px] lg:h-[220px] w-full bg-gray-800" />
+            ))}
+          </div>
+        ) : filteredTracks.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
+            {filteredTracks.map((track, index) => (
+              <div 
+                key={track.id} 
+                ref={!searchQuery && tracks.length === index + 1 ? lastTrackElementRef : null}
+              >
+                <TrackCard track={track} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8 text-gray-400">
+            {searchQuery ? "No songs found matching your search." : "No songs available. Please check your internet connection and try again."}
+          </div>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <Player />
     </div>
-  );
+  )
 }
+
