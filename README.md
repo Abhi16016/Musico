@@ -23,13 +23,8 @@ Musico is a web application that lets users discover and stream music tracks wit
 - Node.js (v18 or higher)
 - Package Manager (npm, yarn, or bun)
 
-### Installation
-
-Choose your preferred package manager:
-
-#### Using npm
-```bash
 # Clone the repository
+```bash
 git clone https://github.com/Abhi16016/Musico.git
 ```
 
