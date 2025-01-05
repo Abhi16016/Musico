@@ -22,16 +22,31 @@ A modern music streaming application built with Next.js, TypeScript, and Tailwin
 - [Sonner](https://sonner.emilkowal.ski/) - Toast notifications
 - [Jamendo API](https://developer.jamendo.com/) - Music streaming service
 
-## Getting Started 🚀
+## Commands 📝
 
-### Prerequisites
+### Setup and Installation
 
-- Node.js (v18 or higher)
-- npm or yarn
-
-### Installation
-
-1. Clone the repository:
 ```bash
+# Clone the repository
 git clone https://github.com/Abhi16016/Musico.git
+
+# Navigate to project directory
 cd Musico
+
+# Install dependencies
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+
+# Start development server
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
