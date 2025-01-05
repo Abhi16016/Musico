@@ -26,7 +26,7 @@ Before you begin, ensure you have the following installed on your local machine:
 - Node.js (v18 or later)
 - npm (v7 or later) or Yarn (v1.22 or later)
 
-## Getting Started
+## Getting Startedy
 
 To get the project up and running on your local machine, follow these steps:
 

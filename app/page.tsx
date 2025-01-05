@@ -41,7 +41,7 @@ export default function Home() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json()
-      const newTracks = data.results.map((track: any) => ({
+      const newTracks: Track[] = data.results.map((track: any) => ({
         id: track.id,
         name: track.name,
         artist_name: track.artist_name,
@@ -50,9 +50,9 @@ export default function Home() {
         image: track.image || '/placeholder.svg?height=400&width=400',
         shareurl: track.shareurl,
       }))
-      setTracks((prev: Track[]) => [...prev, ...newTracks])
-      setFilteredTracks((prev: Track[]) => [...prev, ...newTracks])
-      setPlaylist((prev: Track[]) => [...prev, ...newTracks])
+      setTracks(prev => [...prev, ...newTracks])
+      setFilteredTracks(prev => [...prev, ...newTracks])
+      setPlaylist(prev => [...prev, ...newTracks])
       setHasMore(newTracks.length === TRACKS_PER_PAGE)
       setIsLoading(false)
     } catch (error) {

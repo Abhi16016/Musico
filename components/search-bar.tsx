@@ -23,6 +23,7 @@ export function SearchBar({ onSearch, className }: SearchBarProps) {
 
     document.addEventListener("keydown", down);
 
+    // Set platform-specific key hint on the client
     if (typeof navigator !== "undefined") {
       setIsMac(navigator.platform.includes("Mac"));
     }

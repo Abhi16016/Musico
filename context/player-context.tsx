@@ -15,7 +15,7 @@ interface PlayerContextType {
   previous: () => void
   toggleShuffle: () => void
   toggleLoop: () => void
-  setPlaylist: (tracks: Track[]) => void
+  setPlaylist: (tracks: Track[] | ((prev: Track[]) => Track[])) => void
   seek: (time: number) => void
   setVolume: (volume: number) => void
   getDuration: () => number
