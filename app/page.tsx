@@ -50,9 +50,9 @@ export default function Home() {
         image: track.image || '/placeholder.svg?height=400&width=400',
         shareurl: track.shareurl,
       }))
-      setTracks(prev => [...prev, ...newTracks])
-      setFilteredTracks(prev => [...prev, ...newTracks])
-      setPlaylist(prev => [...prev, ...newTracks])
+      setTracks((prev: Track[]) => [...prev, ...newTracks])
+      setFilteredTracks((prev: Track[]) => [...prev, ...newTracks])
+      setPlaylist((prev: Track[]) => [...prev, ...newTracks])
       setHasMore(newTracks.length === TRACKS_PER_PAGE)
       setIsLoading(false)
     } catch (error) {

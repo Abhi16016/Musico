@@ -1,59 +1,34 @@
-# Musico 🎵
+# Musico - Your Music Hub
 
-A modern music streaming application built with Next.js, TypeScript, and Tailwind CSS. Musico allows users to discover and listen to a wide variety of music tracks with features like infinite scrolling, real-time search, and a sleek audio player.
+Musico is a modern web application that allows users to discover and listen to a wide variety of music tracks. Built with Next.js and React, it offers a seamless and responsive user experience for music enthusiasts.
 
-## Features ✨
+## Features
 
-- **Music Streaming**: Play music tracks directly in the browser
-- **Infinite Scrolling**: Seamlessly load more tracks as you scroll
-- **Real-time Search**: Instantly search through available tracks
-- **Modern Audio Player**: Complete with play/pause, skip, shuffle, and repeat functionality
-- **Responsive Design**: Works perfectly on both desktop and mobile devices
-- **Share Functionality**: Easily share your favorite tracks
-- **Keyboard Controls**: Space bar support for play/pause
+- Browse and search for music tracks
+- Play, pause, and control music playback
+- Responsive design for both desktop and mobile devices
+- Infinite scrolling for continuous track loading
+- Share functionality for tracks
 
-## Tech Stack 🛠️
+## Technologies Used
 
-- [Next.js 14](https://nextjs.org/) - React framework
-- [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [shadcn/ui](https://ui.shadcn.com/) - UI components
-- [Lucide React](https://lucide.dev/) - Icons
-- [Sonner](https://sonner.emilkowal.ski/) - Toast notifications
-- [Jamendo API](https://developer.jamendo.com/) - Music streaming service
+- Next.js 14
+- React 18
+- TypeScript
+- Tailwind CSS
+- Lucide React (for icons)
+- Sonner (for toast notifications)
 
-## Commands 📝
+## Prerequisites
 
-### Setup and Installation
+Before you begin, ensure you have the following installed on your local machine:
 
-# Clone the repository
-```bash
-git clone https://github.com/Abhi16016/Musico.git
-```
+- Node.js (v18 or later)
+- npm (v7 or later) or Yarn (v1.22 or later)
 
-# Navigate to project directory
-```bash
-cd Musico
-```
+## Getting Started
 
-# Install dependencies
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-# or
-bun install
-```
+To get the project up and running on your local machine, follow these steps:
 
-# Start development server
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone the repository:
+

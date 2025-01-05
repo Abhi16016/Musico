@@ -2,7 +2,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['api.jamendo.com', 'usercontent.jamendo.com'],
+    domains: ['api.jamendo.com', 'usercontent.jamendo.com'], 
   },
   experimental: {
     appDir: true,
