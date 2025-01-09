@@ -1,4 +1,4 @@
-# Musico 🎵 
+# Musico 🎵 (API is a bit slow, so please wait for a minute or two for it to load the songs)
 
 A modern music streaming application built with Next.js, React, and TypeScript. Musico provides a seamless music discovery and playback experience with a beautiful, responsive interface.
 
